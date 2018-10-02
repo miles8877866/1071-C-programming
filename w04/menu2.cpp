@@ -1,5 +1,9 @@
 #include<stdio.h>
 
+void prchar(char c,int n){
+for(int i=1;i<=n;i++)
+printf("%c",c);}
+
 void drowrect(int height, int width, int filled)
 {
     if(filled)
@@ -32,7 +36,7 @@ void drowrect(int height, int width, int filled)
     }
 
 }
-
+void drowvert
 
 
 int main()
@@ -64,8 +68,9 @@ int main()
             switch(type)
             {
             case 1:
-                printf("Enter height and type: ");
-                scanf("%d %d", &height, &type);
+                printf("Enter height and type,filled: ");
+                scanf("%d %d", &height, &type, &filled);
+                drowvert(height, type, filled);
                 break;
             case 2:
 
