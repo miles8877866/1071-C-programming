@@ -1,0 +1,34 @@
+#include<stdio.h>
+
+int main(){
+	int n1;
+	int n2;
+	int sum;
+	int dif;
+	int times;
+	int how;
+	int remain;
+	printf("Enter two integers: ");
+	scanf("%d %d",&n1,&n2);
+	if(n1>=0&&n2>=0){
+		sum = n1 + n2;
+	}
+	printf("%d + %d = %d\n",n1,n2,sum);
+	if(n1>=0&&n2>=0){
+		dif = n1 - n2;
+	}
+	printf("%d - %d = %d\n",n1,n2,dif);
+	if(n1>=0&&n2>=0){
+		times = n1*n2;
+	}
+	printf("%d * %d = %d\n",n1,n2,times);
+	if(n1>=0&&n2>=0){
+		how = n1 / n2;
+	}
+	printf("%d / %d = %d\n",n1,n2,how);
+	if(n1>=0&&n2>=0){
+		remain = n1 % n2;
+	}
+	printf("%d %% %d = %d\n",n1,n2,remain);
+	return 0;
+}
