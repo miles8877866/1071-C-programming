@@ -1,0 +1,23 @@
+#include<stdio.h>
+
+
+int encoding(int a,int b,int c,int d,int begin){
+	a = (begin/1000+5)%10*10;
+	b = (begin/100)%10*100;
+	c = (begin/10)%10*1000;
+	d = begin%10;
+	return a+b+c+d;
+	
+	
+}
+
+int main(){
+	int a,b,c,d;
+	int begin;
+		
+	printf("Enter N(-1 to exit): ");
+	scanf("%d",&begin);
+	encoding(a,b,c,d,begin);
+	printf("encode(%d) = %d\n",begin,encoding);// by calling encode(n)
+	printf("decode(%d) = %d\n");// by calling decode(n)
+}
