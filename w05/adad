@@ -1,0 +1,22 @@
+#include<stdio.h>
+
+
+int main()
+{
+	int h1,h2;
+	float kg1,kg2;
+	printf("Enter height (-1 to exit): ");
+	scanf("%d %d",&h1,&h2);
+	while(h1>=0&&h2>=0)
+	{
+		for(int i=h1;i<=h2;i++)
+		{
+			kg1=(i/100.)*(i/100.)*18.5;
+			kg2=(i/100.)*(i/100.)*24;
+			printf("%4d cm: %5.1f ~ %5.1f (kg)\n",i,kg1,kg2);	
+		}break;	
+	}
+	if(h1<1||h2<0){
+		printf("Bye! Coding by your_ID");
+	}
+}
