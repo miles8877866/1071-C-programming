@@ -1,0 +1,51 @@
+#include<stdio.h>
+
+
+int checksqrt(int n)
+{
+    for(int m=1; m<=n; m++)
+    {
+        if(n==(m*m))
+            return m;
+    }
+    return 0;
+}
+
+int main()
+{
+    char conti;
+    int n;
+    int m;
+    printf("Enter N: ");
+    scanf("%d",&n);
+    if(checksqrt(n)==0)
+    {
+        printf("No.");
+    }
+    else
+    {
+        printf("Yes. %d = %d x %d\n",n,checksqrt(n),checksqrt(n));
+    }
+    printf("Continue (Y/N): %c",conti);
+    getchar();
+    conti=getchar();
+    while(conti=='y'||conti=='Y')
+    {
+        int n;
+        int m;
+        printf("Enter N: ");
+        scanf("%d",&n);
+        if(checksqrt(n)==0)
+        {
+            printf("No.");
+        }
+        else
+        {
+            printf("Yes. %d = %d x %d\n",n,checksqrt(n),checksqrt(n));
+        }
+        printf("Continue (Y/N): ");
+        getchar();
+        conti=getchar();
+    }
+    printf("Coding by 407411437");
+}
