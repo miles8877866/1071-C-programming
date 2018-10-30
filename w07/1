@@ -1,0 +1,48 @@
+#include<stdio.h>
+
+int prime(int n)
+{
+    for(int i=2; i<n; i++)
+    {
+        if(n%i==0)
+            return 1;
+    }
+}
+
+int main()
+{
+    int n;
+    char conti;
+        printf("Enter N: ");
+        scanf("%d",&n);
+        if(prime(n)==1)
+        {
+            printf("%d is not a prime.",n);
+        }
+        else
+        {
+            printf("%d is a prime.",n);
+        }
+        printf("Continue (Y/N)?  ");
+        getchar();
+        conti=getchar();
+    while(conti=='y'||conti=='Y')
+    {
+        int n;
+        printf("Enter N: ");
+        scanf("%d",&n);
+        if(prime(n)==1)
+        {
+            printf("%d is not a prime.",n);
+        }
+        else
+        {
+            printf("%d is a prime.",n);
+        }
+        printf("Continue (Y/N)?  ");
+        getchar();
+        conti=getchar();
+        printf("Coding by 407411437");
+    }
+
+}
