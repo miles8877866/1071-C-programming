@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define vegetable 1
+#define wolf 2
+#define hseep 4 //讓他不等於1 + 2
+
+int Left_Bank, Right_Bank;
+
+void Row_Right(int object);
+void Row_Left(int object);
+void print_Direction(char direct);
+
+int main(void)
+{
+	int choice;//輸入選擇 
+    
+    print_Direction('s'); //一開始
+    
+    do{
+    	Left_Bank = 7;
+    	Right_Bank = 0;
+    	
+    	printf("Scan one choice to be first passenger\n");
+    	printf("Scan '1' to choose vegetable\n");
+    	printf("Scan '2' to choose wolf \n");
+    	printf("Scan '4' to choose sheep\n");
+    	scanf("%d", &choice);
+    	switch(choice){
+    		
+    		case 1:
+    			Left_Bank = Left_Bank - 1;//第一步送菜 
+    			Row_Right(1);
+    			break;
+    		case 2:
+    			Left_Bank = Left_Bank - 2;//第一步送狼 
+    			Row_Right(2);
+    			break;
+    		case 4:
+    			Left_Bank = Left_Bank - 4;//第一步送羊 
+    			Row_Right(4);
+    			break;
+    		default :
+    			printf("Check your scan.\n");
+    			break;
+		}
+		if(Right_Bank == 7)
+			exit(0);
+	}while(scanf("%d", &choice) != EOF);
+
+    return 0;
+}
+
+void Row_Right(int object)
+{
+    int member = Right_Bank;
+
+    Right_Bank += object; //移動物體到右岸
+    print_Direction('R');
+    if(Left_Bank == 0 && Right_Bank == 7) //如果左岸等於1且右岸等於7則離開
+    {
+        exit(EXIT_SUCCESS); //leave
+    }
+    if (Right_Bank == 1 || Right_Bank == 2 || Right_Bank == 3 || Right_Bank == 4)
+        Row_Left(0);
+    else
+    {
+        Right_Bank = object; // 把帶來的物體放在右岸
+        Row_Left(member); //把成員送去右岸
+    }
+
+}
+
+void Row_Left(int object)
+{
+    int member = Left_Bank;
+    int rand_Member;
+
+    srand(time(NULL));
+    rand_Member = rand()%2 + 1;
+
+    Left_Bank += object;
+    print_Direction('L');
+
+    if(object == 0)//農夫獨自回來
+    {
+        if(Left_Bank == 3)//左岸是狼和菜
+        {
+            Left_Bank -= rand_Member;//會剩狼或菜
+            Row_Right(rand_Member);//把狼或菜送過去
+        }
+        else if(Left_Bank == 4)//左岸是羊
+        {
+            Left_Bank = 0;//把羊送過去
+            Row_Right(member);
+        }
+    }
+    else
+    {
+        Left_Bank += object; // 把帶來的物體放在左岸
+        Left_Bank = object; //
+        Row_Right(member); //把成員送去右岸
+    }
+}
+
+void print_Direction(char direct)
+{
+    const char *riverBank[] =
+    {
+        " None"," vegetable "," wolf "," vegetable and wolf ",
+        " sheep "," vegetable and sheep "," wolf and sheep "," vegetable and wolf and sheep "//7種狀態分布
+    };
+    if (direct == 'R'){
+         printf("---> ");
+    }
+
+    else if (direct == 'L')
+    {
+         printf("<--- ");
+    }
+
+    else
+        printf("Start");
+
+    printf(" %s",riverBank[Left_Bank]);
+    printf(" ----  RIVER ----");
+    printf(" %s",riverBank[Right_Bank]);
+    printf("\n\n");
+}
+
+/**
+exit( )
+exit( )函式內放置0、非0、EXIT_SUCCESS、EXIT_FAILURE
+
+當exit(1)便會回傳1給main( )，所以main( )程式結束，相當於return 1
+當exit(0)=return 0，所以main( )程式結束
+
+既然都會結束程式那區分0與非0的意義何在呢？
+通常我們會把exit(0)視為正常結束程式，而exit(1)為不正常或有錯誤所以才結束程式
+所以我們也可以把exit(0)改寫為exit (EXIT_SUCCESS)，而exit(1)可改寫為exit (EXIT_FAILURE) 讓程式就易理解
+
+*/
+
+
+
+
