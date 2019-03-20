@@ -4,77 +4,73 @@
 
 #define vegetable 1
 #define wolf 2
-#define hseep 4 //讓他不等於1 + 2
+#define sheep 4
 
-int Left_Bank, Right_Bank;
+int Bring_toRight, Bring_toLeft;
+int Left_Bank = 7, Right_Bank = 0;
 
 void Row_Right(int object);
 void Row_Left(int object);
 void print_Direction(char direct);
+void print_Passenger(char direct);
 
 int main(void)
 {
-	int choice;//輸入選擇 
-    
+    int choice;//輸入選擇
+
     print_Direction('s'); //一開始
-    
-    do{
-    	Left_Bank = 7;
-    	Right_Bank = 0;
-    	
-    	printf("Scan one choice to be first passenger\n");
-    	printf("Scan '1' to choose vegetable\n");
-    	printf("Scan '2' to choose wolf \n");
-    	printf("Scan '4' to choose sheep\n");
-    	scanf("%d", &choice);
-    	switch(choice){
-    		
-    		case 1:
-    			Left_Bank = Left_Bank - 1;//第一步送菜 
-    			Row_Right(1);
-    			break;
-    		case 2:
-    			Left_Bank = Left_Bank - 2;//第一步送狼 
-    			Row_Right(2);
-    			break;
-    		case 4:
-    			Left_Bank = Left_Bank - 4;//第一步送羊 
-    			Row_Right(4);
-    			break;
-    		default :
-    			printf("Check your scan.\n");
-    			break;
-		}
-		if(Right_Bank == 7)
-			exit(0);
-	}while(scanf("%d", &choice) != EOF);
+
+    do
+    {
+        Left_Bank = 7;
+        Right_Bank = 0;
+
+        printf("Scan one choice to be first passenger\n");
+        printf("Scan '1' to choose vegetable\n");
+        printf("Scan '2' to choose wolf \n");
+        printf("Scan '4' to choose sheep\n");
+        scanf("%d", &choice);
+
+        Left_Bank = Left_Bank - choice;//第一步送菜
+        Row_Right(choice);
+
+        if(Right_Bank == 7)
+            return 0;
+    }while(true);
 
     return 0;
 }
 
 void Row_Right(int object)
 {
-    int member = Right_Bank;
+    int memberR = Right_Bank;
 
     Right_Bank += object; //移動物體到右岸
+    Bring_toRight = object;
     print_Direction('R');
+
     if(Left_Bank == 0 && Right_Bank == 7) //如果左岸等於1且右岸等於7則離開
     {
-        exit(EXIT_SUCCESS); //leave
+        return;
     }
-    if (Right_Bank == 1 || Right_Bank == 2 || Right_Bank == 3 || Right_Bank == 4)
-        Row_Left(0);
+
+    else if (Right_Bank == 1 || Right_Bank == 2 || Right_Bank == 3 || Right_Bank == 4)
+    {
+
+        object = 0;
+        Bring_toLeft = 0;
+    }
     else
     {
         Right_Bank = object; // 把帶來的物體放在右岸
-        Row_Left(member); //把成員送去右岸
+
+        object = memberR; //把成員送去左岸
+
+        Bring_toLeft = object;
+
     }
 
-}
-
-void Row_Left(int object)
-{
-    int member = Left_Bank;
+    int memberL = Left_Bank; //往右
     int rand_Member;
 
     srand(time(NULL));
@@ -88,60 +84,74 @@ void Row_Left(int object)
         if(Left_Bank == 3)//左岸是狼和菜
         {
             Left_Bank -= rand_Member;//會剩狼或菜
-            Row_Right(rand_Member);//把狼或菜送過去
+            Row_Right(rand_Member);//把狼或菜送到右岸
+            Bring_toRight = rand_Member;
         }
         else if(Left_Bank == 4)//左岸是羊
         {
             Left_Bank = 0;//把羊送過去
-            Row_Right(member);
+            Row_Right(memberL);
+            Bring_toRight = memberL;
         }
     }
     else
     {
         Left_Bank += object; // 把帶來的物體放在左岸
         Left_Bank = object; //
-        Row_Right(member); //把成員送去右岸
+        Row_Right(memberL); //把成員送去右岸
+        Bring_toRight = memberL;
     }
 }
 
 void print_Direction(char direct)
 {
-    const char *riverBank[] =
+
+    if (direct == 'R')
     {
-        " None"," vegetable "," wolf "," vegetable and wolf ",
-        " sheep "," vegetable and sheep "," wolf and sheep "," vegetable and wolf and sheep "//7種狀態分布
-    };
-    if (direct == 'R'){
-         printf("---> ");
+        printf("farmer brings ");
+        print_Passenger('R');
+        printf("---> ");
     }
 
     else if (direct == 'L')
     {
-         printf("<--- ");
+        printf("<--- ");
+        printf("farmer brings ");
+        print_Passenger('L');
     }
 
     else
         printf("Start");
 
-    printf(" %s",riverBank[Left_Bank]);
-    printf(" ----  RIVER ----");
-    printf(" %s",riverBank[Right_Bank]);
     printf("\n\n");
 }
 
-/**
-exit( )
-exit( )函式內放置0、非0、EXIT_SUCCESS、EXIT_FAILURE
+void print_Passenger(char direct)
+{
+    if (direct == 'R')//如果往右
+    {
+        if(Bring_toRight == 1)
+            printf("vegetable");
+        else if(Bring_toRight == 2)
+            printf("wolf");
+        else if(Bring_toRight == 4)
+            printf("sheep");
+        else
+            printf("none");
+    }
+    else//如果往左
+    {
+        if(Bring_toLeft == 1)
+            printf("vegetable");
+        else if(Bring_toLeft == 2)
+            printf("wolf");
+        else if(Bring_toLeft == 4)
+            printf("sheep");
+        else
+            printf("none");
+    }
 
-當exit(1)便會回傳1給main( )，所以main( )程式結束，相當於return 1
-當exit(0)=return 0，所以main( )程式結束
-
-既然都會結束程式那區分0與非0的意義何在呢？
-通常我們會把exit(0)視為正常結束程式，而exit(1)為不正常或有錯誤所以才結束程式
-所以我們也可以把exit(0)改寫為exit (EXIT_SUCCESS)，而exit(1)可改寫為exit (EXIT_FAILURE) 讓程式就易理解
-
-*/
-
+}
 
 
 
